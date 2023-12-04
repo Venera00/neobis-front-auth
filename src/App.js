@@ -1,7 +1,19 @@
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginPage from "../src/pages/LoginPage/LoginPage";
+
 import "./App.css";
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;
