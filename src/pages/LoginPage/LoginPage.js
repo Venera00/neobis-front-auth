@@ -1,11 +1,23 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import mainImg from "../../assets/mainImg.jpg";
 import passwordVisible from "../../assets/passwordVisible.svg";
 import passwordNotVisible from "../../assets/passwordNotVisible.svg";
 import "./LoginPage.css";
 
 const LoginPage = () => {
+  const notify = () =>
+    toast("Неверный логин или пароль", {
+      position: "top-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   return (
     <div className="login-container">
       <div className="login-info">
@@ -50,6 +62,7 @@ const LoginPage = () => {
         <Link className="login__link">
           <p>У меня еще нет аккаунта</p>
         </Link>
+        <ToastContainer />
       </div>
     </div>
   );
