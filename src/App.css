@@ -1,1 +1,24 @@
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500&family=Poppins:wght@400;500&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: #212121;
+}
+
+input {
+  background-color: #f8f8f8;
+  width: 22rem;
+  height: 3.25rem;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding-left: 1rem;
+  border-radius: 0.75rem;
+  color: #767676;
+}
