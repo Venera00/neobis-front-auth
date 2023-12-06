@@ -7,6 +7,9 @@ import passwordNotVisible from "../../assets/passwordNotVisible.svg";
 import "./LoginPage.css";
 
 const LoginPage = () => {
+  const [password, setPassword] = useState("");
+  const [visible, setVisible] = useState(false);
+
   const notify = () =>
     toast("Неверный логин или пароль", {
       position: "top-left",
@@ -50,11 +53,19 @@ const LoginPage = () => {
           />
           <div className="password-input">
             <input
-              type="password"
+              value={password}
+              type={visible ? "text" : "password"}
               placeholder="Пароль (тоже введи)"
+              onChange={(e) => setPassword(e.target.value)}
               className="login__password"
             />
-            <img src={passwordVisible} className="input-img" />
+            <div className="input-img" onClick={() => setVisible(!visible)}>
+              {visible ? (
+                <img src={passwordNotVisible} alt="Eye icon" />
+              ) : (
+                <img src={passwordVisible} alt="Eye closed icon" />
+              )}
+            </div>
           </div>
           <button className="login__btn">Войти</button>
         </form>

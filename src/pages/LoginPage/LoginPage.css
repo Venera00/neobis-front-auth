@@ -38,15 +38,17 @@
 .password-input {
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
+  justify-content: space-between;
   margin-bottom: 2rem;
+  width: 22rem;
+  height: 3.25rem;
+  background-color: #f8f8f8;
+  border-radius: 0.75rem;
 }
 
 .input-img {
-  position: absolute;
-  right: 0.4rem;
-  background-color: #f8f8f8;
+  display: flex;
+  padding-right: 0.5rem;
   cursor: pointer;
 }
 
