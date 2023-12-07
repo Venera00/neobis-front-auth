@@ -30,20 +30,6 @@ const LoginPage = () => {
       </div>
 
       <div className="login-form__container">
-        {/* <div className="back-container">
-          <button className="back-btn">&#8249;</button>
-          <p className="back-title">Назад</p>
-        </div>
-        <form>
-          <h3>Создать аккаунт Lorby</h3>
-          <input type="email" placeholder="Введи адрес почты" />
-          <input type="text" placeholder="Придумай логин" />
-          <input type="password" placeholder="Создай пароль" />
-          <input type="password" placeholder="Повтори пароль" />
-
-          <button>Далее</button>
-        </form> */}
-
         <h3 className="login-form__title">Велком бэк!</h3>
         <form className="login-form">
           <input
@@ -70,7 +56,7 @@ const LoginPage = () => {
           <button className="login__btn">Войти</button>
         </form>
 
-        <Link className="login__link">
+        <Link to="/registration" className="login__link">
           <p>У меня еще нет аккаунта</p>
         </Link>
         <ToastContainer />

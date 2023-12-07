@@ -21,3 +21,7 @@ input {
   padding-left: 1rem;
   border-radius: 0.75rem;
 }
+
+.login__link {
+  text-decoration: none;
+}
