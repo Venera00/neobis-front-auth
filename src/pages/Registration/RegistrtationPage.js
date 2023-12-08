@@ -4,36 +4,14 @@ import { Formik, Form, Field, useFormik } from "formik";
 import mainImg from "../../assets/mainImg.jpg";
 import passwordVisible from "../../assets/passwordVisible.svg";
 import passwordNotVisible from "../../assets/passwordNotVisible.svg";
+import { passwordValidationSchema } from "../../components/passwordRequirementsYup";
 import "./RegistrationPage.css";
-import * as yup from "yup";
-
-const passwordValidationSchema = yup.object().shape({
-  email: yup.string().email("{Введите gmail}").required(),
-  login: yup.string().required(),
-  password: yup
-    .string()
-    .min(8)
-    .max(15)
-    .matches(
-      /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/
-    )
-    .required("Введите пароль"),
-  repeatPassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null])
-    .required("Пароли должны совпадать"),
-});
 
 const onSubmit = () => {
   console.log("Submitted");
 };
 
 const RegistrtationPage = () => {
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
-
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: {
@@ -47,6 +25,11 @@ const RegistrtationPage = () => {
     });
 
   console.log(errors);
+
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
 
   const hasMinMaxSymbols = password.length >= 8 && password.length >= 15;
   const hasLowerCase = /[a-zа-я]/.test(password);
@@ -72,7 +55,7 @@ const RegistrtationPage = () => {
           </div>
         </Link>
 
-        <Formik>
+        <Formik onSubmit={handleSubmit}>
           <Form onSubmit={handleSubmit} className="login-form">
             <h3>
               Создать аккаунт <br /> Lorby
@@ -113,6 +96,7 @@ const RegistrtationPage = () => {
                 )}
               </div>
             </div>
+            <passwordRequirements />
             <ul className="">
               <li
                 style={{
@@ -168,6 +152,7 @@ const RegistrtationPage = () => {
                 {hasSpecialCharacter ? (errors.password ? "✅" : "❌") : ""}
               </li>
             </ul>
+
             <div className="password-input">
               <Field
                 value={repeatPassword}
