@@ -17,7 +17,7 @@ const RegistrtationPage = () => {
   const [visible, setVisible] = useState(false);
   const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
 
-  const hasMinMaxSymbols = password.length >= 8 && password.length >= 15;
+  const hasMinMaxSymbols = password.length >= 8 || password.length >= 15;
   const hasLowerCase = /[a-zа-я]/.test(password);
   const hasUpperCase = /[A-ZА-Я]/.test(password);
   const hasNumber = /[0-9]/.test(password);
