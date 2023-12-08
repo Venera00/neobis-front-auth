@@ -1,7 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, useFormik } from "formik";
 import mainImg from "../../assets/mainImg.jpg";
+import passwordVisible from "../../assets/passwordVisible.svg";
+import passwordNotVisible from "../../assets/passwordNotVisible.svg";
 import "./RegistrationPage.css";
 import * as yup from "yup";
 
@@ -14,11 +16,12 @@ const passwordValidationSchema = yup.object().shape({
     .max(15)
     .matches(
       /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/
-    ),
+    )
+    .required("Введите пароль"),
   repeatPassword: yup
     .string()
-    .oneOf([yup.ref("password"), null], "Пароли должны совпадать")
-    .required(),
+    .oneOf([yup.ref("password"), null])
+    .required("Пароли должны совпадать"),
 });
 
 const onSubmit = () => {
@@ -26,6 +29,11 @@ const onSubmit = () => {
 };
 
 const RegistrtationPage = () => {
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: {
@@ -40,12 +48,11 @@ const RegistrtationPage = () => {
 
   console.log(errors);
 
-  const hasMinMaxSymbols =
-    values.password.length >= 8 && values.password.length >= 15;
-  const hasLowerCase = /[a-zа-я]/.test(values.password);
-  const hasUpperCase = /[A-ZА-Я]/.test(values.password);
-  const hasNumber = /[0-9]/.test(values.password);
-  const hasSpecialCharacter = /[$&+,:;=?@#|'<>.-^*()%!]/.test(values.password);
+  const hasMinMaxSymbols = password.length >= 8 && password.length >= 15;
+  const hasLowerCase = /[a-zа-я]/.test(password);
+  const hasUpperCase = /[A-ZА-Я]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecialCharacter = /[$&+,:;=?@#|'<>.-^*()%!]/.test(password);
 
   return (
     <div className="auth-main">
@@ -89,14 +96,23 @@ const RegistrtationPage = () => {
               placeholder="Придумай логин"
             />
 
-            <Field
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              name="password"
-              type="password"
-              placeholder="Создай пароль"
-            />
+            <div className="password-input">
+              <Field
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={handleBlur}
+                name="password"
+                type={visible ? "text" : "password"}
+                placeholder="Создай пароль"
+              />
+              <div className="input-img" onClick={() => setVisible(!visible)}>
+                {visible ? (
+                  <img src={passwordNotVisible} alt="Eye icon" />
+                ) : (
+                  <img src={passwordVisible} alt="Eye closed icon" />
+                )}
+              </div>
+            </div>
             <ul className="">
               <li
                 style={{
@@ -108,11 +124,7 @@ const RegistrtationPage = () => {
                 }}
               >
                 От 8 до 15 символов{" "}
-                {values.password.length >= 8 && values.password.length >= 15
-                  ? "✅"
-                  : errors.password
-                  ? "❌"
-                  : ""}
+                {hasMinMaxSymbols ? "✅" : errors.password ? "❌" : ""}
               </li>
               <li
                 style={{
@@ -156,15 +168,26 @@ const RegistrtationPage = () => {
                 {hasSpecialCharacter ? (errors.password ? "✅" : "❌") : ""}
               </li>
             </ul>
-
-            <Field
-              value={values.repeatPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              name="repeatPassword"
-              type="password"
-              placeholder="Повтори пароль"
-            />
+            <div className="password-input">
+              <Field
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
+                onBlur={handleBlur}
+                name="repeatPassword"
+                type={repeatPasswordVisible ? "text" : "password"}
+                placeholder="Повтори пароль"
+              />
+              <div
+                className="input-img"
+                onClick={() => setRepeatPasswordVisible(!repeatPasswordVisible)}
+              >
+                {repeatPasswordVisible ? (
+                  <img src={passwordNotVisible} alt="Eye icon" />
+                ) : (
+                  <img src={passwordVisible} alt="Eye closed icon" />
+                )}
+              </div>
+            </div>
 
             <button type="button" className="auth-btn">
               Далее
