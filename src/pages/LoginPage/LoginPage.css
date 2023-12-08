@@ -44,6 +44,8 @@
   height: 3.25rem;
   background-color: #f8f8f8;
   border-radius: 0.75rem;
+  border: none;
+  outline: none;
 }
 
 .input-img {

@@ -23,19 +23,45 @@ const RegistrtationPage = () => {
   const hasNumber = /[0-9]/.test(password);
   const hasSpecialCharacter = /[$&+,:;=?@#|'<>.-^*()%!]/.test(password);
 
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: {
-        email: "",
-        login: "",
-        password: "",
-        repeatPassword: "",
-      },
-      validationSchema: passwordValidationSchema,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+  } = useFormik({
+    initialValues: {
+      email: "",
+      login: "",
+      password: "",
+      repeatPassword: "",
+    },
+    validationSchema: passwordValidationSchema,
+    onSubmit,
+  });
 
   console.log(errors);
+
+  const isValuesValid = () => {
+    return (
+      values.email &&
+      values.login &&
+      values.password &&
+      values.repeatPassword &&
+      !errors.email &&
+      !errors.login &&
+      !errors.password &&
+      !errors.repeatPassword &&
+      hasMinMaxSymbols &&
+      hasLowerCase &&
+      hasUpperCase &&
+      hasNumber &&
+      hasSpecialCharacter &&
+      values.password === values.repeatPassword
+    );
+  };
 
   return (
     <div className="auth-main">
@@ -56,7 +82,7 @@ const RegistrtationPage = () => {
         </Link>
 
         <Formik onSubmit={handleSubmit}>
-          <Form onSubmit={handleSubmit} className="login-form">
+          <Form onSubmit={handleSubmit} className="auth-form">
             <h3>
               Создать аккаунт <br /> Lorby
             </h3>
@@ -77,9 +103,14 @@ const RegistrtationPage = () => {
               name="login"
               type="text"
               placeholder="Придумай логин"
+              className={errors.login && touched.login ? "input-error" : ""}
             />
 
-            <div className="password-input">
+            <div
+              className={`password-input ${
+                errors.password && touched.password ? "input-error" : ""
+              }`}
+            >
               <Field
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -87,6 +118,9 @@ const RegistrtationPage = () => {
                 name="password"
                 type={visible ? "text" : "password"}
                 placeholder="Создай пароль"
+                className={
+                  errors.password && touched.password ? "input-error" : ""
+                }
               />
               <div className="input-img" onClick={() => setVisible(!visible)}>
                 {visible ? (
@@ -96,8 +130,10 @@ const RegistrtationPage = () => {
                 )}
               </div>
             </div>
+
             <passwordRequirements />
-            <ul className="">
+
+            <ul>
               <li
                 style={{
                   color: hasMinMaxSymbols
@@ -173,7 +209,13 @@ const RegistrtationPage = () => {
               </div>
             </div>
 
-            <button type="button" className="auth-btn">
+            <button
+              type="button"
+              disabled={isSubmitting}
+              className={`auth-btn ${
+                isValuesValid() ? "auth-btn__black" : "auth-btn__gray"
+              }`}
+            >
               Далее
             </button>
           </Form>

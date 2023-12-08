@@ -65,16 +65,18 @@
   font-size: 1rem;
 }
 
-.login-form {
+.auth-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.login-form h3 {
+.auth-form h3 {
   font-weight: 500;
   font-size: 2rem;
   text-align: center;
-  margin-bottom: 3rem;
 }
 
 ul {
@@ -88,11 +90,10 @@ li {
 }
 
 .input-error {
-  border-color: #fc8181;
+  border: 2px solid #fc8181;
 }
 
 .auth-btn {
-  color: #767676;
   width: 22rem;
   height: 3.2rem;
   font-size: 1rem;
@@ -101,5 +102,14 @@ li {
   cursor: pointer;
   margin-bottom: 3rem;
   border: none;
+}
+
+.auth-btn_black {
+  background-color: #292929;
+  color: #fff;
+}
+
+.auth-btn__gray {
   background-color: #d7d7d7;
+  color: #767676;
 }
