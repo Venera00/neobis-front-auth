@@ -87,6 +87,10 @@ li {
   color: #767676;
 }
 
+.input-error {
+  border-color: #fc8181;
+}
+
 .auth-btn {
   color: #767676;
   width: 22rem;

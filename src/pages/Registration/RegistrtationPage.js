@@ -5,7 +5,7 @@ import mainImg from "../../assets/mainImg.jpg";
 import "./RegistrationPage.css";
 import * as yup from "yup";
 
-const schema = yup.object().shape({
+const passwordValidationSchema = yup.object().shape({
   email: yup.string().email("{Введите gmail}").required(),
   login: yup.string().required(),
   password: yup
@@ -13,7 +13,7 @@ const schema = yup.object().shape({
     .min(8)
     .max(15)
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/
+      /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/
     ),
   repeatPassword: yup
     .string()
@@ -26,18 +26,26 @@ const onSubmit = () => {
 };
 
 const RegistrtationPage = () => {
-  const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik({
-    initialValues: {
-      email: "",
-      login: "",
-      password: "",
-      repeatPassword: "",
-    },
-    validationSchema: schema,
-    onSubmit,
-  });
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: {
+        email: "",
+        login: "",
+        password: "",
+        repeatPassword: "",
+      },
+      validationSchema: passwordValidationSchema,
+      onSubmit,
+    });
 
   console.log(errors);
+
+  const hasMinMaxSymbols =
+    values.password.length >= 8 && values.password.length >= 15;
+  const hasLowerCase = /[a-zа-я]/.test(values.password);
+  const hasUpperCase = /[A-ZА-Я]/.test(values.password);
+  const hasNumber = /[0-9]/.test(values.password);
+  const hasSpecialCharacter = /[$&+,:;=?@#|'<>.-^*()%!]/.test(values.password);
 
   return (
     <div className="auth-main">
@@ -69,6 +77,8 @@ const RegistrtationPage = () => {
               name="email"
               type="email"
               placeholder="Введи адрес почты"
+              className={errors.email && touched.email ? "input-error" : ""}
+              required
             />
             <Field
               value={values.login}
@@ -88,10 +98,63 @@ const RegistrtationPage = () => {
               placeholder="Создай пароль"
             />
             <ul className="">
-              <li>От 8 до 15 символов ✅</li>
-              <li>Строчные и прописные буквы ❌</li>
-              <li>Минимум 1 цифра</li>
-              <li>Минимум 1 спецсимвол (!, ", #, $...)</li>
+              <li
+                style={{
+                  color: hasMinMaxSymbols
+                    ? "green"
+                    : errors.password
+                    ? "red"
+                    : "#767676",
+                }}
+              >
+                От 8 до 15 символов{" "}
+                {values.password.length >= 8 && values.password.length >= 15
+                  ? "✅"
+                  : errors.password
+                  ? "❌"
+                  : ""}
+              </li>
+              <li
+                style={{
+                  color:
+                    hasLowerCase && hasUpperCase
+                      ? "green"
+                      : errors.password
+                      ? "red"
+                      : "#767676",
+                }}
+              >
+                Строчные и прописные буквы
+                {hasLowerCase && hasUpperCase
+                  ? errors.password
+                    ? "✅"
+                    : "❌"
+                  : ""}
+              </li>
+              <li
+                style={{
+                  color: hasNumber
+                    ? "green"
+                    : errors.password
+                    ? "red"
+                    : "#767676",
+                }}
+              >
+                Минимум 1 цифра{" "}
+                {hasNumber ? (errors.password ? "✅" : "❌") : ""}
+              </li>
+              <li
+                style={{
+                  color: hasSpecialCharacter
+                    ? "green"
+                    : errors.password
+                    ? "red"
+                    : "#767676",
+                }}
+              >
+                Минимум 1 спецсимвол (!, ", #, $...){" "}
+                {hasSpecialCharacter ? (errors.password ? "✅" : "❌") : ""}
+              </li>
             </ul>
 
             <Field
