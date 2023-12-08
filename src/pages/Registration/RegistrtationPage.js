@@ -1,10 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, useFormik } from "formik";
 import mainImg from "../../assets/mainImg.jpg";
 import "./RegistrationPage.css";
 
 const RegistrtationPage = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      login: "",
+      password: "",
+      repeatPassword: "",
+    },
+  });
+
+  console.log(formik);
+
   return (
     <div className="auth-main">
       <div className="main-wrapper">
@@ -28,15 +39,38 @@ const RegistrtationPage = () => {
             <h3>
               Создать аккаунт <br /> Lorby
             </h3>
-            <input name="email" type="email" placeholder="Введи адрес почты" />
-            <input name="login" type="text" placeholder="Придумай логин" />
-            <input
+            <Field
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              name="email"
+              type="email"
+              placeholder="Введи адрес почты"
+            />
+            <Field
+              value={formik.values.login}
+              onChange={formik.handleChange}
+              name="login"
+              type="text"
+              placeholder="Придумай логин"
+            />
+
+            <Field
+              value={formik.values.password}
+              onChange={formik.handleChange}
               name="password"
               type="password"
               placeholder="Создай пароль"
             />
-            <input
-              name="password"
+            <ul className="">
+              <li>От 8 до 15 символов</li>
+              <li>Строчные и прописные буквы</li>
+              <li>Минимум 1 цифра</li>
+              <li>Минимум 1 спецсимвол (!, ", #, $...)</li>
+            </ul>
+
+            <Field
+              value={formik.values.repeatPassword}
+              onChange={formik.handleChange}
               type="password"
               placeholder="Повтори пароль"
             />

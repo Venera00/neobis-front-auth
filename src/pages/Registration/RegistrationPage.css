@@ -34,7 +34,7 @@
 .auth-info__container {
   display: flex;
   flex-direction: column;
-  position: relative;
+  gap: 3rem;
 }
 
 .back-container {
@@ -42,8 +42,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.6rem;
-  position: absolute;
-  top: -5rem;
+  margin-top: 1rem;
 }
 
 .back-btn {
@@ -79,7 +78,7 @@
 }
 
 .auth-btn {
-  color: #fff;
+  color: #767676;
   width: 22rem;
   height: 3.2rem;
   font-size: 1rem;
