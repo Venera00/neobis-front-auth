@@ -12,6 +12,17 @@ const onSubmit = () => {
 };
 
 const RegistrtationPage = () => {
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
+
+  const hasMinMaxSymbols = password.length >= 8 && password.length >= 15;
+  const hasLowerCase = /[a-zа-я]/.test(password);
+  const hasUpperCase = /[A-ZА-Я]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecialCharacter = /[$&+,:;=?@#|'<>.-^*()%!]/.test(password);
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: {
@@ -25,17 +36,6 @@ const RegistrtationPage = () => {
     });
 
   console.log(errors);
-
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
-
-  const hasMinMaxSymbols = password.length >= 8 && password.length >= 15;
-  const hasLowerCase = /[a-zа-я]/.test(password);
-  const hasUpperCase = /[A-ZА-Я]/.test(password);
-  const hasNumber = /[0-9]/.test(password);
-  const hasSpecialCharacter = /[$&+,:;=?@#|'<>.-^*()%!]/.test(password);
 
   return (
     <div className="auth-main">
@@ -122,9 +122,9 @@ const RegistrtationPage = () => {
               >
                 Строчные и прописные буквы
                 {hasLowerCase && hasUpperCase
-                  ? errors.password
-                    ? "✅"
-                    : "❌"
+                  ? "✅"
+                  : errors.password
+                  ? "❌"
                   : ""}
               </li>
               <li
@@ -136,8 +136,7 @@ const RegistrtationPage = () => {
                     : "#767676",
                 }}
               >
-                Минимум 1 цифра{" "}
-                {hasNumber ? (errors.password ? "✅" : "❌") : ""}
+                Минимум 1 цифра {hasNumber ? "✅" : errors.password ? "❌" : ""}
               </li>
               <li
                 style={{
@@ -149,7 +148,7 @@ const RegistrtationPage = () => {
                 }}
               >
                 Минимум 1 спецсимвол (!, ", #, $...){" "}
-                {hasSpecialCharacter ? (errors.password ? "✅" : "❌") : ""}
+                {hasSpecialCharacter ? "✅" : errors.password ? "❌" : ""}
               </li>
             </ul>
 
