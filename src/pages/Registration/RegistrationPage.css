@@ -77,6 +77,16 @@
   margin-bottom: 3rem;
 }
 
+ul {
+  text-align: left;
+}
+
+li {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #767676;
+}
+
 .auth-btn {
   color: #767676;
   width: 22rem;

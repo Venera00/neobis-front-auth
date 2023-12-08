@@ -3,18 +3,41 @@ import { Link } from "react-router-dom";
 import { Formik, Form, Field, useFormik } from "formik";
 import mainImg from "../../assets/mainImg.jpg";
 import "./RegistrationPage.css";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  email: yup.string().email("{Введите gmail}").required(),
+  login: yup.string().required(),
+  password: yup
+    .string()
+    .min(8)
+    .max(15)
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]+$/
+    ),
+  repeatPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Пароли должны совпадать")
+    .required(),
+});
+
+const onSubmit = () => {
+  console.log("Submitted");
+};
 
 const RegistrtationPage = () => {
-  const formik = useFormik({
+  const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       email: "",
       login: "",
       password: "",
       repeatPassword: "",
     },
+    validationSchema: schema,
+    onSubmit,
   });
 
-  console.log(formik);
+  console.log(errors);
 
   return (
     <div className="auth-main">
@@ -35,47 +58,54 @@ const RegistrtationPage = () => {
         </Link>
 
         <Formik>
-          <Form className="login-form">
+          <Form onSubmit={handleSubmit} className="login-form">
             <h3>
               Создать аккаунт <br /> Lorby
             </h3>
             <Field
-              value={formik.values.email}
-              onChange={formik.handleChange}
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
               name="email"
               type="email"
               placeholder="Введи адрес почты"
             />
             <Field
-              value={formik.values.login}
-              onChange={formik.handleChange}
+              value={values.login}
+              onChange={handleChange}
+              onBlur={handleBlur}
               name="login"
               type="text"
               placeholder="Придумай логин"
             />
 
             <Field
-              value={formik.values.password}
-              onChange={formik.handleChange}
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
               name="password"
               type="password"
               placeholder="Создай пароль"
             />
             <ul className="">
-              <li>От 8 до 15 символов</li>
-              <li>Строчные и прописные буквы</li>
+              <li>От 8 до 15 символов ✅</li>
+              <li>Строчные и прописные буквы ❌</li>
               <li>Минимум 1 цифра</li>
               <li>Минимум 1 спецсимвол (!, ", #, $...)</li>
             </ul>
 
             <Field
-              value={formik.values.repeatPassword}
-              onChange={formik.handleChange}
+              value={values.repeatPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="repeatPassword"
               type="password"
               placeholder="Повтори пароль"
             />
 
-            <button className="auth-btn">Далее</button>
+            <button type="button" className="auth-btn">
+              Далее
+            </button>
           </Form>
         </Formik>
       </div>
