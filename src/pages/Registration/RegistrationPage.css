@@ -113,3 +113,10 @@ li {
   background-color: #d7d7d7;
   color: #767676;
 }
+
+.error-message {
+  color: #fc8181;
+  font-weight: 500;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}

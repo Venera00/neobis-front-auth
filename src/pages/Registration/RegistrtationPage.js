@@ -207,6 +207,11 @@ const RegistrtationPage = () => {
                   <img src={passwordVisible} alt="Eye closed icon" />
                 )}
               </div>
+              {errors.repeatPassword &&
+                touched.repeatPassword &&
+                values.password !== values.repeatPassword && (
+                  <p className="error-message">Пароли не совпадают</p>
+                )}
             </div>
 
             <button
