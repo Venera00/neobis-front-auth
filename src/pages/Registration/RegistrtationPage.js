@@ -197,6 +197,9 @@ const RegistrtationPage = () => {
                 )}
               </div>
             </div>
+            {errors.password && touched.repeatPassword && (
+              <div>{errors.repeatPassword}</div>
+            )}
 
             <button
               type="submit"
