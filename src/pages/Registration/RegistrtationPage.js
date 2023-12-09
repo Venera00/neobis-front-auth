@@ -4,12 +4,8 @@ import { Formik, Form, Field, useFormik } from "formik";
 import mainImg from "../../assets/mainImg.jpg";
 import passwordVisible from "../../assets/passwordVisible.svg";
 import passwordNotVisible from "../../assets/passwordNotVisible.svg";
-import { passwordValidationSchema } from "../../components/passwordRequirementsYup";
+import { PasswordValidationSchema } from "../../components/PasswordRequirementsYup";
 import "./RegistrationPage.css";
-
-const onSubmit = () => {
-  console.log("Submitted");
-};
 
 const RegistrtationPage = () => {
   const [password, setPassword] = useState("");
@@ -38,27 +34,24 @@ const RegistrtationPage = () => {
       password: "",
       repeatPassword: "",
     },
-    validationSchema: passwordValidationSchema,
-    onSubmit,
+    validationSchema: PasswordValidationSchema,
+    onSubmit: (formValues) => {
+      console.log("Submitted", formValues);
+    },
   });
 
   console.log(errors);
 
   const isValuesValid = () => {
+    console.log("Form Values:", values);
+    console.log("Form Errors:", errors);
     return (
       values.email &&
       values.login &&
-      values.password &&
-      values.repeatPassword &&
       !errors.email &&
       !errors.login &&
       !errors.password &&
       !errors.repeatPassword &&
-      hasMinMaxSymbols &&
-      hasLowerCase &&
-      hasUpperCase &&
-      hasNumber &&
-      hasSpecialCharacter &&
       values.password === values.repeatPassword
     );
   };
@@ -118,9 +111,7 @@ const RegistrtationPage = () => {
                 name="password"
                 type={visible ? "text" : "password"}
                 placeholder="Создай пароль"
-                className={
-                  errors.password && touched.password ? "input-error" : ""
-                }
+                className="password-field"
               />
               <div className="input-img" onClick={() => setVisible(!visible)}>
                 {visible ? (
@@ -130,8 +121,6 @@ const RegistrtationPage = () => {
                 )}
               </div>
             </div>
-
-            <passwordRequirements />
 
             <ul>
               <li
@@ -207,19 +196,17 @@ const RegistrtationPage = () => {
                   <img src={passwordVisible} alt="Eye closed icon" />
                 )}
               </div>
-              {errors.repeatPassword &&
-                touched.repeatPassword &&
-                values.password !== values.repeatPassword && (
-                  <p className="error-message">Пароли не совпадают</p>
-                )}
             </div>
 
             <button
-              type="button"
+              type="submit"
+              onSubmit={isValuesValid}
               disabled={isSubmitting}
-              className={`auth-btn ${
-                isValuesValid() ? "auth-btn__black" : "auth-btn__gray"
-              }`}
+              className={
+                isValuesValid()
+                  ? "auth-btn auth-btn_black"
+                  : "auth-btn auth-btn_gray"
+              }
             >
               Далее
             </button>

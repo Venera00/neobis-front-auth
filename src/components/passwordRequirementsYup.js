@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const passwordValidationSchema = yup.object().shape({
+export const PasswordValidationSchema = yup.object().shape({
   email: yup.string().email("{Введите gmail}").required(),
   login: yup.string().required(),
   password: yup
@@ -13,6 +13,6 @@ export const passwordValidationSchema = yup.object().shape({
     .required("Введите пароль"),
   repeatPassword: yup
     .string()
-    .oneOf([yup.ref("password"), null])
+    .oneOf([yup.ref("password"), null], "Пароли должны совпадать")
     .required("Пароли должны совпадать"),
 });
