@@ -43,5 +43,11 @@
   background-color: #292929;
   color: #fff;
   cursor: pointer;
+  text-decoration: none;
   border: none;
+}
+
+.modal-btn_white {
+  background-color: #fff;
+  color: #292929;
 }
