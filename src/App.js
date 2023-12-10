@@ -4,6 +4,7 @@ import LoginPage from "../src/pages/LoginPage/LoginPage";
 import LoggedInPage from "../src/pages/LoggedIn/LoggedInPage";
 import RegistrationPage from "./pages/Registration/RegistrationPage";
 import SendEmail from "./pages/SendEmail/SendEmail";
+import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import "./App.css";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/loggedin" element={<LoggedInPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
           <Route path="/sendemail" element={<SendEmail />} />
+          <Route path="/welcome" element={<WelcomePage />} />
         </Routes>
       </BrowserRouter>
     </div>
