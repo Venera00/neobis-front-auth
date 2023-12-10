@@ -17,7 +17,18 @@ const RegistrtationPage = () => {
   const hasLowerCase = /[a-zа-я]/.test(password);
   const hasUpperCase = /[A-ZА-Я]/.test(password);
   const hasNumber = /[0-9]/.test(password);
-  const hasSpecialCharacter = /[$&+,:;=?@#|'<>.-^*()%!]/.test(password);
+  const hasSpecialCharacter =
+    password && /[!@#$%^&*()_+[\]{};':"\\|,.<>/?]/.test(password);
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+    handleChange(e);
+  };
+
+  const handleChangeRepeatPassword = (e) => {
+    setRepeatPassword(e.target.value);
+    handleChange(e);
+  };
 
   const {
     values,
@@ -56,6 +67,8 @@ const RegistrtationPage = () => {
     );
   };
 
+  console.log(errors.repeatPassword);
+
   return (
     <div className="auth-main">
       <div className="main-wrapper">
@@ -74,7 +87,7 @@ const RegistrtationPage = () => {
           </div>
         </Link>
 
-        <Formik onSubmit={handleSubmit}>
+        <Formik>
           <Form onSubmit={handleSubmit} className="auth-form">
             <h3>
               Создать аккаунт <br /> Lorby
@@ -98,15 +111,14 @@ const RegistrtationPage = () => {
               placeholder="Придумай логин"
               className={errors.login && touched.login ? "input-error" : ""}
             />
-
             <div
               className={`password-input ${
                 errors.password && touched.password ? "input-error" : ""
               }`}
             >
               <Field
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={values.password}
+                onChange={handleChangePassword}
                 onBlur={handleBlur}
                 name="password"
                 type={visible ? "text" : "password"}
@@ -121,7 +133,6 @@ const RegistrtationPage = () => {
                 )}
               </div>
             </div>
-
             <ul>
               <li
                 style={{
@@ -172,15 +183,14 @@ const RegistrtationPage = () => {
                     : "#767676",
                 }}
               >
-                Минимум 1 спецсимвол (!, ", #, $...){" "}
+                Минимум 1 спецсимвол (!, ", #, $...)
                 {hasSpecialCharacter ? "✅" : errors.password ? "❌" : ""}
               </li>
             </ul>
-
             <div className="password-input">
               <Field
                 value={repeatPassword}
-                onChange={(e) => setRepeatPassword(e.target.value)}
+                onChange={handleChangeRepeatPassword}
                 onBlur={handleBlur}
                 name="repeatPassword"
                 type={repeatPasswordVisible ? "text" : "password"}
@@ -198,7 +208,7 @@ const RegistrtationPage = () => {
               </div>
             </div>
             {errors.password && touched.repeatPassword && (
-              <div>{errors.repeatPassword}</div>
+              <div className="error-msg">{errors.repeatPassword}</div>
             )}
 
             <button
