@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import mainImg from "../../assets/mainImg.jpg";
+import SendSecondEmailModal from "../../components/Modal/SendSecondEmailModal";
 import "./SendEmail.css";
 
 const SendEmail = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="send-container">
       <div className="send-wrapper">
@@ -34,7 +45,10 @@ const SendEmail = () => {
           </p>
           <p className="send-signs">(´｡• ω •｡`)</p>
 
-          <button className="send-btn">Письмо не пришло</button>
+          <button onClick={handleShowModal} className="send-btn">
+            Письмо не пришло
+          </button>
+          {showModal && <SendSecondEmailModal onClose={handleCloseModal} />}
         </div>
       </div>
     </div>
