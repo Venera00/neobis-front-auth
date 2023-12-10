@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, useFormik } from "formik";
+import instance from "../../api/axios";
 import mainImg from "../../assets/mainImg.jpg";
 import passwordVisible from "../../assets/passwordVisible.svg";
 import passwordNotVisible from "../../assets/passwordNotVisible.svg";
@@ -20,6 +21,23 @@ const RegistrtationPage = () => {
   const hasSpecialCharacter =
     password && /[!@#$%^&*()_+[\]{};':"\\|,.<>/?]/.test(password);
 
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const response = await instance.post("/users/register/", {
+        username: values.login,
+        email: values.email,
+        password: values.password,
+        password_confirm: values.repeatPassword,
+      });
+
+      console.log("Submitted", response.data);
+    } catch (error) {
+      console.error("Registration failed:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleChangePassword = (e) => {
     setPassword(e.target.value);
     handleChange(e);
@@ -36,7 +54,7 @@ const RegistrtationPage = () => {
     touched,
     handleBlur,
     handleChange,
-    handleSubmit,
+    // handleSubmit,
     isSubmitting,
   } = useFormik({
     initialValues: {
@@ -46,9 +64,7 @@ const RegistrtationPage = () => {
       repeatPassword: "",
     },
     validationSchema: PasswordValidationSchema,
-    onSubmit: (formValues) => {
-      console.log("Submitted", formValues);
-    },
+    onSubmit: { handleSubmit },
   });
 
   console.log(errors);
@@ -87,8 +103,8 @@ const RegistrtationPage = () => {
           </div>
         </Link>
 
-        <Formik>
-          <Form onSubmit={handleSubmit} className="auth-form">
+        <Formik onSubmit={handleSubmit}>
+          <Form className="auth-form">
             <h3>
               Создать аккаунт <br /> Lorby
             </h3>
@@ -189,7 +205,7 @@ const RegistrtationPage = () => {
             </ul>
             <div className="password-input">
               <Field
-                value={repeatPassword}
+                value={values.repeatPassword}
                 onChange={handleChangeRepeatPassword}
                 onBlur={handleBlur}
                 name="repeatPassword"
