@@ -1,0 +1,50 @@
+.send-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rem;
+  color: #212121;
+  font-weight: 500px;
+}
+
+.send-content__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10rem;
+}
+
+.send-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.send-title {
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.send-subtitle {
+  font-size: 1.25rem;
+  color: #767676;
+}
+
+.send-subtitle span {
+  color: #212121;
+}
+
+.send-signs {
+  font-size: 1.25rem;
+}
+
+.send-btn {
+  font-size: 1rem;
+  width: 21rem;
+  height: 3rem;
+  border: none;
+  cursor: pointer;
+  background-color: #fff;
+}
