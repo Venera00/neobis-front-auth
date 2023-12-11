@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Formik, Form, Field, useFormik } from "formik";
-import instance from "../../api/axios";
+import register from "../../api/axios";
 import mainImg from "../../assets/mainImg.jpg";
 import passwordVisible from "../../assets/passwordVisible.svg";
 import passwordNotVisible from "../../assets/passwordNotVisible.svg";
 import { PasswordValidationSchema } from "../../components/PasswordRequirementsYup";
 import "./RegistrationPage.css";
 
-const RegistrtationPage = () => {
+const RegistrationPage = () => {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [visible, setVisible] = useState(false);
@@ -20,23 +20,6 @@ const RegistrtationPage = () => {
   const hasNumber = /[0-9]/.test(password);
   const hasSpecialCharacter =
     password && /[!@#$%^&*()_+[\]{};':"\\|,.<>/?]/.test(password);
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const response = await instance.post("/users/register/", {
-        username: values.login,
-        email: values.email,
-        password: values.password,
-        password_confirm: values.repeatPassword,
-      });
-
-      console.log("Submitted", response.data);
-    } catch (error) {
-      console.error("Registration failed:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   const handleChangePassword = (e) => {
     setPassword(e.target.value);
@@ -54,8 +37,9 @@ const RegistrtationPage = () => {
     touched,
     handleBlur,
     handleChange,
-    // handleSubmit,
+    handleSubmit,
     isSubmitting,
+    handleReset,
   } = useFormik({
     initialValues: {
       email: "",
@@ -64,7 +48,15 @@ const RegistrtationPage = () => {
       repeatPassword: "",
     },
     validationSchema: PasswordValidationSchema,
-    onSubmit: { handleSubmit },
+    onSubmit: (values, { resetForm }) => {
+      register(values)
+        .then((response) => {
+          Navigate("/welcome");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   });
 
   console.log(errors);
@@ -103,147 +95,147 @@ const RegistrtationPage = () => {
           </div>
         </Link>
 
-        <Formik onSubmit={handleSubmit}>
-          <Form className="auth-form">
-            <h3>
-              Создать аккаунт <br /> Lorby
-            </h3>
+        {/* <Formik> */}
+        <Form className="auth-form">
+          <h3>
+            Создать аккаунт <br /> Lorby
+          </h3>
+          <Field
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            name="email"
+            type="email"
+            placeholder="Введи адрес почты"
+            className={errors.email && touched.email ? "input-error" : ""}
+            required
+          />
+          <Field
+            value={values.login}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            name="login"
+            type="text"
+            placeholder="Придумай логин"
+            className={errors.login && touched.login ? "input-error" : ""}
+          />
+          <div
+            className={`password-input ${
+              errors.password && touched.password ? "input-error" : ""
+            }`}
+          >
             <Field
-              value={values.email}
-              onChange={handleChange}
+              value={values.password}
+              onChange={handleChangePassword}
               onBlur={handleBlur}
-              name="email"
-              type="email"
-              placeholder="Введи адрес почты"
-              className={errors.email && touched.email ? "input-error" : ""}
-              required
+              name="password"
+              type={visible ? "text" : "password"}
+              placeholder="Создай пароль"
+              className="password-field"
             />
+            <div className="input-img" onClick={() => setVisible(!visible)}>
+              {visible ? (
+                <img src={passwordNotVisible} alt="Eye icon" />
+              ) : (
+                <img src={passwordVisible} alt="Eye closed icon" />
+              )}
+            </div>
+          </div>
+          <ul>
+            <li
+              style={{
+                color: hasMinMaxSymbols
+                  ? "green"
+                  : errors.password
+                  ? "red"
+                  : "#767676",
+              }}
+            >
+              От 8 до 15 символов{" "}
+              {hasMinMaxSymbols ? "✅" : errors.password ? "❌" : ""}
+            </li>
+            <li
+              style={{
+                color:
+                  hasLowerCase && hasUpperCase
+                    ? "green"
+                    : errors.password
+                    ? "red"
+                    : "#767676",
+              }}
+            >
+              Строчные и прописные буквы
+              {hasLowerCase && hasUpperCase
+                ? "✅"
+                : errors.password
+                ? "❌"
+                : ""}
+            </li>
+            <li
+              style={{
+                color: hasNumber
+                  ? "green"
+                  : errors.password
+                  ? "red"
+                  : "#767676",
+              }}
+            >
+              Минимум 1 цифра {hasNumber ? "✅" : errors.password ? "❌" : ""}
+            </li>
+            <li
+              style={{
+                color: hasSpecialCharacter
+                  ? "green"
+                  : errors.password
+                  ? "red"
+                  : "#767676",
+              }}
+            >
+              Минимум 1 спецсимвол (!, ", #, $...)
+              {hasSpecialCharacter ? "✅" : errors.password ? "❌" : ""}
+            </li>
+          </ul>
+          <div className="password-input">
             <Field
-              value={values.login}
-              onChange={handleChange}
+              value={values.repeatPassword}
+              onChange={handleChangeRepeatPassword}
               onBlur={handleBlur}
-              name="login"
-              type="text"
-              placeholder="Придумай логин"
-              className={errors.login && touched.login ? "input-error" : ""}
+              name="repeatPassword"
+              type={repeatPasswordVisible ? "text" : "password"}
+              placeholder="Повтори пароль"
             />
             <div
-              className={`password-input ${
-                errors.password && touched.password ? "input-error" : ""
-              }`}
+              className="input-img"
+              onClick={() => setRepeatPasswordVisible(!repeatPasswordVisible)}
             >
-              <Field
-                value={values.password}
-                onChange={handleChangePassword}
-                onBlur={handleBlur}
-                name="password"
-                type={visible ? "text" : "password"}
-                placeholder="Создай пароль"
-                className="password-field"
-              />
-              <div className="input-img" onClick={() => setVisible(!visible)}>
-                {visible ? (
-                  <img src={passwordNotVisible} alt="Eye icon" />
-                ) : (
-                  <img src={passwordVisible} alt="Eye closed icon" />
-                )}
-              </div>
+              {repeatPasswordVisible ? (
+                <img src={passwordNotVisible} alt="Eye icon" />
+              ) : (
+                <img src={passwordVisible} alt="Eye closed icon" />
+              )}
             </div>
-            <ul>
-              <li
-                style={{
-                  color: hasMinMaxSymbols
-                    ? "green"
-                    : errors.password
-                    ? "red"
-                    : "#767676",
-                }}
-              >
-                От 8 до 15 символов{" "}
-                {hasMinMaxSymbols ? "✅" : errors.password ? "❌" : ""}
-              </li>
-              <li
-                style={{
-                  color:
-                    hasLowerCase && hasUpperCase
-                      ? "green"
-                      : errors.password
-                      ? "red"
-                      : "#767676",
-                }}
-              >
-                Строчные и прописные буквы
-                {hasLowerCase && hasUpperCase
-                  ? "✅"
-                  : errors.password
-                  ? "❌"
-                  : ""}
-              </li>
-              <li
-                style={{
-                  color: hasNumber
-                    ? "green"
-                    : errors.password
-                    ? "red"
-                    : "#767676",
-                }}
-              >
-                Минимум 1 цифра {hasNumber ? "✅" : errors.password ? "❌" : ""}
-              </li>
-              <li
-                style={{
-                  color: hasSpecialCharacter
-                    ? "green"
-                    : errors.password
-                    ? "red"
-                    : "#767676",
-                }}
-              >
-                Минимум 1 спецсимвол (!, ", #, $...)
-                {hasSpecialCharacter ? "✅" : errors.password ? "❌" : ""}
-              </li>
-            </ul>
-            <div className="password-input">
-              <Field
-                value={values.repeatPassword}
-                onChange={handleChangeRepeatPassword}
-                onBlur={handleBlur}
-                name="repeatPassword"
-                type={repeatPasswordVisible ? "text" : "password"}
-                placeholder="Повтори пароль"
-              />
-              <div
-                className="input-img"
-                onClick={() => setRepeatPasswordVisible(!repeatPasswordVisible)}
-              >
-                {repeatPasswordVisible ? (
-                  <img src={passwordNotVisible} alt="Eye icon" />
-                ) : (
-                  <img src={passwordVisible} alt="Eye closed icon" />
-                )}
-              </div>
-            </div>
-            {errors.password && touched.repeatPassword && (
-              <div className="error-msg">{errors.repeatPassword}</div>
-            )}
+          </div>
+          {errors.password && touched.repeatPassword && (
+            <div className="error-msg">{errors.repeatPassword}</div>
+          )}
 
-            <button
-              type="submit"
-              onSubmit={isValuesValid}
-              disabled={isSubmitting}
-              className={
-                isValuesValid()
-                  ? "auth-btn auth-btn_black"
-                  : "auth-btn auth-btn_gray"
-              }
-            >
-              Далее
-            </button>
-          </Form>
-        </Formik>
+          <button
+            type="submit"
+            onSubmit={isValuesValid}
+            disabled={isSubmitting}
+            className={
+              isValuesValid()
+                ? "auth-btn auth-btn_black"
+                : "auth-btn auth-btn_gray"
+            }
+          >
+            Далее
+          </button>
+        </Form>
+        {/* </Formik> */}
       </div>
     </div>
   );
 };
 
-export default RegistrtationPage;
+export default RegistrationPage;
