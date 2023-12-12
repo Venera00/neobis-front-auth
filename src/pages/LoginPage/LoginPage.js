@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { login } from "../../api/axios";
 import mainImg from "../../assets/mainImg.jpg";
 import passwordVisible from "../../assets/passwordVisible.svg";
 import passwordNotVisible from "../../assets/passwordNotVisible.svg";
@@ -9,6 +10,7 @@ import "./LoginPage.css";
 const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
+  const [username, setUsername] = useState("");
 
   const notify = () =>
     toast("Неверный логин или пароль", {
@@ -21,6 +23,19 @@ const LoginPage = () => {
       progress: undefined,
       theme: "light",
     });
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const userData = { username, password };
+      const response = await login(userData);
+    } catch (error) {
+      console.log("Login failed", error);
+      notify();
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="login-info">
@@ -31,7 +46,7 @@ const LoginPage = () => {
 
       <div className="login-form__container">
         <h3 className="login-form__title">Велком бэк!</h3>
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleLogin}>
           <input
             type="text"
             placeholder="Введи туда-сюда логин"
