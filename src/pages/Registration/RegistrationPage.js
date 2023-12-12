@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, useFormik } from "formik";
 import register from "../../api/axios";
 import mainImg from "../../assets/mainImg.jpg";
@@ -13,7 +13,7 @@ const RegistrationPage = () => {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const hasMinMaxSymbols = password.length >= 8 || password.length >= 15;
   const hasLowerCase = /[a-zа-я]/.test(password);
@@ -108,7 +108,8 @@ const RegistrationPage = () => {
             register(values)
               .then((response) => {
                 setSubmitting(false);
-                history.push("/sendemail");
+                navigate("/sendemail");
+                console.log(values);
               })
               .catch((error) => {
                 setSubmitting(false);
