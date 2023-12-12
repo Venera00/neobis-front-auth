@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 
 const instance = axios.create({
   baseURL: "http://139.59.159.246:8000/api/schema/swagger-ui/#/",
@@ -11,7 +10,6 @@ const instance = axios.create({
 export const register = async (data) => {
   try {
     const response = await instance.post("/users/register/");
-
     return response.data;
   } catch (error) {
     console.log("Login failed", error);
@@ -21,7 +19,6 @@ export const register = async (data) => {
 export const login = async (data) => {
   try {
     const response = await instance.post("/users/login", data);
-    Navigate("/welcome");
     return response.data;
   } catch (error) {
     console.error("Registration failed:", error);
