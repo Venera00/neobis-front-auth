@@ -42,6 +42,10 @@ const SendEmail = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="send-container">
       <div className="send-wrapper">
