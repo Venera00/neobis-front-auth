@@ -107,7 +107,6 @@ const RegistrationPage = () => {
             register(values)
               .then((response) => {
                 setSubmitting(false);
-                Navigate("/welcome");
               })
               .catch((error) => {
                 setSubmitting(false);

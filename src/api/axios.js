@@ -2,7 +2,7 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 
 const instance = axios.create({
-  baseURL: "http://139.59.159.246:8000",
+  baseURL: "http://139.59.159.246:8000/api/schema/swagger-ui/#/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,7 +11,7 @@ const instance = axios.create({
 export const register = async (data) => {
   try {
     const response = await instance.post("/users/register/");
-    Navigate("/loggedin");
+
     return response.data;
   } catch (error) {
     console.log("Login failed", error);
