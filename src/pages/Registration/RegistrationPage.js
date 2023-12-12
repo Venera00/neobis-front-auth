@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, Form, Field, useFormik } from "formik";
+import { Formik, Form, Field } from "formik";
 import register from "../../api/axios";
 import mainImg from "../../assets/mainImg.jpg";
 import passwordVisible from "../../assets/passwordVisible.svg";
 import passwordNotVisible from "../../assets/passwordNotVisible.svg";
-import { PasswordValidationSchema } from "../../components/PasswordRequirementsYup";
+import { PasswordValidationSchema } from "../../components/PasswordValidate/PasswordRequirementsYup";
 import "./RegistrationPage.css";
 
 const RegistrationPage = () => {
@@ -21,62 +21,6 @@ const RegistrationPage = () => {
   const hasNumber = /[0-9]/.test(password);
   const hasSpecialCharacter =
     password && /[!@#$%^&*()_+[\]{};':"\\|,.<>/?]/.test(password);
-
-  // const handleChangePassword = (e) => {
-  //   setPassword(e.target.value);
-  //   handleChange(e);
-  // };
-
-  // const handleChangeRepeatPassword = (e) => {
-  //   setRepeatPassword(e.target.value);
-  //   handleChange(e);
-  // };
-
-  // const {
-  //   values,
-  //   errors,
-  //   touched,
-  //   handleBlur,
-  //   handleChange,
-  //   // handleSubmit,
-  //   isSubmitting,
-  //   handleReset,
-  // } = useFormik({
-  //   initialValues: {
-  //     email: "",
-  //     login: "",
-  //     password: "",
-  //     repeatPassword: "",
-  //   },
-  //   validationSchema: PasswordValidationSchema,
-  //   onSubmit: (values, { resetForm }) => {
-  //     register(values)
-  //       .then((response) => {
-  //         Navigate("/welcome");
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   },
-  // });
-
-  // console.log(errors);
-
-  // const isValuesValid = () => {
-  //   console.log("Form Values:", values);
-  //   console.log("Form Errors:", errors);
-  //   return (
-  //     values.email &&
-  //     values.login &&
-  //     !errors.email &&
-  //     !errors.login &&
-  //     !errors.password &&
-  //     !errors.repeatPassword &&
-  //     values.password === values.repeatPassword
-  //   );
-  // };
-
-  // console.log(errors.repeatPassword);
 
   return (
     <div className="auth-main">
