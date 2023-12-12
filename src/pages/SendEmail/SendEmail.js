@@ -19,27 +19,30 @@ const SendEmailReq = ({ token }) => {
   }, [token]);
 };
 
-const SendEmail = () => {
+const SendEmail = ({ email }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const handleShowModal = () => {
-    resendEmail()
-      .then((data) => {
-        console.log("Email resent successfully", data);
-      })
-      .catch((error) => {
-        console.log("Failed to resend email", error);
-      });
-    setShowModal(true);
+  const sendEmail = async () => {
+    try {
+      const response = await emailSend("/users/confirm-email/{token}/");
+      console.log("Email sent successfully", response);
+    } catch (error) {
+      console.log("Email sending failed", error);
+    }
   };
 
   const resendEmail = async () => {
     try {
-      const response = await instance.get("/users/resend-confirmation-email/");
-      return response.data;
+      const response = await instance.post("/users/resend-confirmation-email/");
+      console.log("Email resent successfully", response.data);
     } catch (error) {
-      console.log("Failed to resend email");
+      console.log("Failed to resend email", error);
     }
+  };
+
+  const handleShowModal = async () => {
+    await sendEmail();
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
@@ -67,7 +70,7 @@ const SendEmail = () => {
         <div className="send-info">
           <h3 className="send-title">
             Выслали письмо со ссылкой для <br /> завершения регистрации <br />
-            на example@gmail.com
+            на {email}
           </h3>
           <p className="send-subtitle">
             Если письмо не пришло, <br />

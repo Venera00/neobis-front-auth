@@ -108,7 +108,7 @@ const RegistrationPage = () => {
             register(values)
               .then((response) => {
                 setSubmitting(false);
-                navigate("/sendemail");
+                navigate("/sendemail", { state: { userEmail: values.email } });
                 console.log(values);
               })
               .catch((error) => {
