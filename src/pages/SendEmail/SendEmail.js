@@ -1,18 +1,45 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import mainImg from "../../assets/mainImg.jpg";
 import SendSecondEmailModal from "../../components/Modal/SendSecondEmailModal";
 import "./SendEmail.css";
+import instance, { emailSend } from "../../api/axios";
+
+const SendEmailReq = ({ token }) => {
+  useEffect(() => {
+    if (token) {
+      emailSend(token)
+        .then((data) => {
+          console.log("Email confirm successful", data);
+        })
+        .catch((error) => {
+          console.log("Email confirm failed", error);
+        });
+    }
+  }, [token]);
+};
 
 const SendEmail = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
+    resendEmail()
+      .then((data) => {
+        console.log("Email resent successfully", data);
+      })
+      .catch((error) => {
+        console.log("Failed to resend email", error);
+      });
     setShowModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const resendEmail = async () => {
+    try {
+      const response = await instance.get("/users/resend-confirmation-email/");
+      return response.data;
+    } catch (error) {
+      console.log("Failed to resend email");
+    }
   };
 
   return (

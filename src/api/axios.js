@@ -25,4 +25,14 @@ export const login = async (data) => {
   }
 };
 
+export const emailSend = async (token) => {
+  try {
+    const response = await instance.get("/users/confirm-email/${token}");
+    return response.data;
+  } catch (error) {
+    console.log("Confirmation email failed", error);
+    throw error;
+  }
+};
+
 export default instance;
