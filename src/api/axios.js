@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://marina-backender.org.kg/api/schema/swagger-ui/#/",
+  baseURL: "https://marina-backender.org.kg/api/",
   headers: {
     "Content-Type": "application/json",
   },
