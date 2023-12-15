@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://marina-backender.org.kg/api/",
+  baseURL: "https://marina-backender.org.kg/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,6 +10,7 @@ const instance = axios.create({
 export const register = async (data) => {
   try {
     const response = await instance.post("/users/register/");
+    console.log("Registration success", response.data);
     return response.data;
   } catch (error) {
     console.log("Login failed", error);

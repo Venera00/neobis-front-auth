@@ -125,7 +125,7 @@ const RegistrationPage = () => {
                       : "#767676",
                   }}
                 >
-                  От 8 до 15 символов{" "}
+                  От 8 до 15 символов
                   {hasMinMaxSymbols ? "✅" : errors.password ? "❌" : ""}
                 </li>
                 <li
